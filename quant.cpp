@@ -242,14 +242,13 @@ SDL_Surface *load_image(char *filename, int *Width, int *Height)
     {
         *Width = surface->w;
         *Height = surface->h;
-        // Only 32 bits image
-        if (surface->format->BitsPerPixel != 32)
-        {
-            fprintf(stderr, "Image has %d-bits. Use only 32-bit images.\n",
-                    surface->format->BitsPerPixel);
-            SDL_FreeSurface(surface);
-            return nullptr;
-        }
+        // convertint to 32 bits
+        SDL_Surface *aux =
+            SDL_ConvertSurfaceFormat(
+                //surface, SDL_PIXELFORMAT_RGBA8888, 0);
+                surface, SDL_PIXELFORMAT_RGB888, 0);
+        SDL_FreeSurface(surface);
+        surface = aux;
     }
     return surface;
 }
